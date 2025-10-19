@@ -1,0 +1,85 @@
+:root{
+    --header-bg: rgba(255,255,255,0.9);
+    --header-shadow: 0 2px 6px rgba(2,6,23,0.08);
+    --accent: #083344;
+}
+
+.site-header{
+    background: var(--header-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: var(--header-shadow);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 40;
+}
+
+.header-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+}
+
+.logo img{ height: 42px; display:block }
+
+.primary-navigation ul{ list-style: none; margin:0; padding:0; display:flex; gap:1rem; }
+.primary-navigation a{ color:var(--accent); text-decoration:none; font-weight:600 }
+
+/* Menu toggle (hamburger) */
+.menu-toggle{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width:40px;
+    height:40px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.menu-toggle:focus{ outline:2px solid rgba(8,51,68,0.12); border-radius:6px }
+.hamburger,
+.hamburger::before,
+.hamburger::after{
+    content: '';
+    display:block;
+    width:22px;
+    height:2px;
+    background: var(--accent);
+    transition: transform .25s ease, opacity .2s ease;
+}
+.hamburger::before{ transform: translateY(-7px) }
+.hamburger::after{ transform: translateY(5px) }
+
+/* MOBILE: default - show hamburger, hide nav */
+.primary-navigation{ display:none }
+
+/* When nav is open (aria-expanded true on button) */
+.menu-toggle[aria-expanded="true"] .hamburger{ background: transparent }
+.menu-toggle[aria-expanded="true"] .hamburger::before{ transform: rotate(45deg) translate(4px, 4px) }
+.menu-toggle[aria-expanded="true"] .hamburger::after{ transform: rotate(-45deg) translate(4px, -4px) }
+
+/* DESKTOP: show nav, hide hamburger */
+@media (min-width: 768px){
+    .menu-toggle{ display:none }
+    .primary-navigation{ display:block }
+    .primary-navigation ul{ align-items:center }
+}
+
+/* Mobile open state: navigation panel stacked */
+@media (max-width: 767px){
+    .primary-navigation{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        background: var(--header-bg);
+        border-top: 1px solid rgba(0,0,0,0.04);
+        padding: 0.75rem 1rem 1rem;
+    }
+    .primary-navigation ul{ flex-direction: column; gap:0.5rem }
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruta Calc</title>
+
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="stily.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="header.css">
+</head>
+<body>
+    <header class="site-header" id="site-header">
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <img src="./img/banana.png" alt="Logo Fruta Calc" />
+                
+            </a>
+
+            <button id="menu-toggle" class="menu-toggle" aria-controls="primary-navigation" aria-expanded="false" aria-label="Abrir menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <nav id="primary-navigation" class="primary-navigation" role="navigation">
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="home">
+        <h1>
+            Calculadora de Banana Profissional
+        </h1>
+
+        <h2>Como você negocia?</h2>
+
+        <div class="trade-choice" role="radiogroup" aria-label="Tipo de negociação">
+            <input type="radio" id="choice-simples" name="trade_type" value="simples" checked>
+            <label for="choice-simples" class="choice-btn">Simples</label>
+
+            <input type="radio" id="choice-classificada" name="trade_type" value="classificada">
+            <label for="choice-classificada" class="choice-btn">Classificada</label>
+        </div>
+
+        <h2>Como você mede o preço?</h2>
+
+        <div class="trade-choice weight-choice" role="radiogroup" aria-label="Como mede o peso">
+            <input type="radio" id="weight-caixa" name="weight_type" value="caixa" checked>
+            <label for="weight-caixa" class="choice-btn">Caixa</label>
+
+            <input type="radio" id="weight-quilo" name="weight_type" value="quilo">
+            <label for="weight-quilo" class="choice-btn">Quilo</label>
+        </div>
+
+        <!-- Calculadora: aparece quando opção for 'simples' e 'caixa' -->
+        <div id="calculator" class="calculator" aria-live="polite">
+                        <div class="calculator-card">
+                                <!-- Seção: simples -->
+                                <div id="simple-section">
+                                    <form id="calc-form" onsubmit="return false;">
+                                            <div class="field">
+                                                    <label for="peso-caixa">Peso da caixa (kg)</label>
+                                                    <input type="number" step="any" id="peso-caixa" placeholder="Ex: 12.5">
+                                            </div>
+
+                                            <div class="field">
+                                                    <label for="preco-caixa" id="preco-label">Preço da caixa (R$)</label>
+                                                    <input type="number" step="any" id="preco-caixa" placeholder="Ex: 120.00">
+                                            </div>
+
+                                            <div class="field">
+                                                    <label for="quantidade-caixas">Quantidade de caixas</label>
+                                                    <input type="number" step="1" id="quantidade-caixas" placeholder="Ex: 3">
+                                            </div>
+
+                        <!-- cálculo automático; botão removido -->
+                                    </form>
+
+                                    <div id="calc-result" class="calc-result" aria-hidden="true">
+                                            <p><strong id="label-total">Valor total:</strong> <span id="valor-total">R$ 0,00</span></p>
+                                            <p><strong id="label-second">Peso total:</strong> <span id="peso-total">0 kg</span></p>
+                                            <p><strong id="label-third">Valor por 1 kg:</strong> <span id="valor-por-kg">R$ 0,00</span></p>
+                                    </div>
+                                </div>
+
+                                <!-- Seção: classificada -->
+                                <div id="classificada-section" style="display:none;">
+                                    <form id="classificada-form" onsubmit="return false;">
+                                        <div class="class-input-grid">
+                                            <div class="class-input-card class-good">
+                                                <h3>Banana Boa</h3>
+                                                <div class="field">
+                                                    <label for="peso-boa">Peso da caixa (kg)</label>
+                                                    <input type="number" step="any" id="peso-boa" placeholder="Ex: 12.5">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="preco-boa" class="preco-classificada-label">Preço (R$)</label>
+                                                    <input type="number" step="any" id="preco-boa" placeholder="Ex: 120.00">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="qtd-boa">Quantidade de caixas</label>
+                                                    <input type="number" step="1" id="qtd-boa" placeholder="Ex: 3">
+                                                </div>
+                                            </div>
+
+                                            <div class="class-input-card class-weak">
+                                                <h3>Banana Fraca</h3>
+                                                <div class="field">
+                                                    <label for="peso-fraca">Peso da caixa (kg)</label>
+                                                    <input type="number" step="any" id="peso-fraca" placeholder="Ex: 12.5">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="preco-fraca" class="preco-classificada-label">Preço (R$)</label>
+                                                    <input type="number" step="any" id="preco-fraca" placeholder="Ex: 80.00">
+                                                </div>
+                                                <div class="field">
+                                                    <label for="qtd-fraca">Quantidade de caixas</label>
+                                                    <input type="number" step="1" id="qtd-fraca" placeholder="Ex: 2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div id="classificada-result" class="calc-result" aria-hidden="true">
+                                                                                <h4>Resultados por classe</h4>
+                                                                                <div class="class-results-grid">
+                                                                                    <div class="class-card class-good">
+                                                                                        <div class="class-card-head">Boa</div>
+                                                                                        <p><strong id="label-valor-boa">Valor total:</strong> <span id="valor-total-boa">R$ 0,00</span></p>
+                                                                                        <p><strong id="label-peso-boa">Peso total:</strong> <span id="peso-total-boa">0 kg</span></p>
+                                                                                        <p><strong id="label-terceiro-boa">Valor (caixa ou/kg):</strong> <span id="valor-terceiro-boa">R$ 0,00</span></p>
+                                                                                    </div>
+
+                                                                                    <div class="class-card class-weak">
+                                                                                        <div class="class-card-head">Fraca</div>
+                                                                                        <p><strong id="label-valor-fraca">Valor total:</strong> <span id="valor-total-fraca">R$ 0,00</span></p>
+                                                                                        <p><strong id="label-peso-fraca">Peso total:</strong> <span id="peso-total-fraca">0 kg</span></p>
+                                                                                        <p><strong id="label-terceiro-fraca">Valor (caixa ou/kg):</strong> <span id="valor-terceiro-fraca">R$ 0,00</span></p>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <h4>Totais</h4>
+                                                                                <div class="totals-row">
+                                                                                    <p><strong>Soma dos valores:</strong> <span id="soma-valores">R$ 0,00</span></p>
+                                                                                    <p><strong>Peso total:</strong> <span id="peso-total-classificada">0 kg</span></p>
+                                                                                    <p><strong id="label-media">Média de preço (kg ou caixa):</strong> <span id="media-preco">R$ 0,00</span></p>
+                                                                                </div>
+                                    </div>
+                                </div>
+                        </div>
+        </div>
+    </section>
+    <script src="calc.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

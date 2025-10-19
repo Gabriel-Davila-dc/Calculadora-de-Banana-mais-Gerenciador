@@ -1,0 +1,11 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* Degradê linear moderno */
+    background: linear-gradient(135deg, #91ff00 0%, #eeff00 50%, #b5f700 100%);
+   
+}
