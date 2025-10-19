@@ -27,6 +27,7 @@
                     <li><a href="#home">Início</a></li>
                     <li><a href="#about">Sobre</a></li>
                     <li><a href="#contact">Contato</a></li>
+                    <li><a href="manage.html">Gerenciar</a></li>
                 </ul>
             </nav>
         </div>
@@ -77,7 +78,6 @@
                                                     <input type="number" step="1" id="quantidade-caixas" placeholder="Ex: 3">
                                             </div>
 
-                        <!-- cálculo automático; botão removido -->
                                     </form>
 
                                     <div id="calc-result" class="calc-result" aria-hidden="true">
@@ -153,8 +153,82 @@
                                 </div>
                         </div>
         </div>
+        <!-- ação: salvar vendas (será conectado à conta do usuário futuramente) -->
+        <div class="save-row">
+            <button id="btn-save" class="save-btn">Salvar</button>
+            <p class="save-note">Salvar permite que você guarde esta venda em sua conta. Em breve cada usuário terá um perfil para gerenciar vendas salvas.</p>
+        </div>
     </section>
+    <!-- modal para perguntar nome do comprador -->
+    <div id="modal-backdrop" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <h3 id="modal-title">Nome do comprador</h3>
+            <p class="modal-note">Insira o nome do comprador para identificar essa venda no painel de gerenciamento.</p>
+            <div class="modal-row">
+                <input id="modal-buyer" type="text" placeholder="Nome do comprador (ex: João Silva)">
+            </div>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn">Cancelar</button>
+                <button id="modal-save" class="save-btn">Salvar venda</button>
+            </div>
+        </div>
+    </div>
     <script src="calc.js"></script>
+    <script src="save.js"></script>
     <script src="menu.js"></script>
+        <script>
+            // modal flow: abrir modal, ler nome e delegar para save.js
+            document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('btn-save');
+                const backdrop = document.getElementById('modal-backdrop');
+                const inp = document.getElementById('modal-buyer');
+                const cancel = document.getElementById('modal-cancel');
+                const save = document.getElementById('modal-save');
+
+                function openModal(){
+                    if(!backdrop) return;
+                    inp.value = '';
+                    backdrop.classList.add('visible');
+                    backdrop.setAttribute('aria-hidden','false');
+                    inp.focus();
+                }
+
+                function closeModal(){
+                    if(!backdrop) return;
+                    backdrop.classList.remove('visible');
+                    backdrop.setAttribute('aria-hidden','true');
+                }
+
+                if(btn){
+                    btn.addEventListener('click', function(){ openModal(); });
+                }
+
+                if(cancel){ cancel.addEventListener('click', closeModal); }
+
+                if(save){
+                    save.addEventListener('click', function(){
+                        const buyer = inp.value && inp.value.trim();
+                        if(!buyer){
+                            alert('Por favor insira o nome do comprador.');
+                            inp.focus();
+                            return;
+                        }
+                        try{
+                            // delega para save.js — função recebe opcionalmente o buyerName
+                            const sale = window.saveSaleLocally ? window.saveSaleLocally(buyer) : null;
+                            closeModal();
+                            btn.textContent = 'Salvo';
+                            setTimeout(()=> btn.textContent = 'Salvar', 1400);
+                           
+                        }catch(e){
+                            alert('Erro ao salvar: ' + e.message);
+                        }
+                    });
+                }
+
+                // fechar modal com ESC
+                document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+            });
+        </script>
 </body>
 </html>

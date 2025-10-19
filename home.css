@@ -7,12 +7,17 @@
 
 :root{
     /* cores e tokens reutilizáveis */
-    --bg-card: rgba(255,255,255,0.95);
-    --bg-card-2: rgba(255,255,255,0.92);
+    --bg-card: #ffffff;
+    --bg-card-2: #fbfdff;
+    --brand: #0b5f7a; /* azul esverdeado principal */
     --accent: #083344;
+    --banana: #f6d549; /* amarelo banana */
+    --lime: #A3E635; /* verde lima */
+    --good: var(--lime);
+    --weak: #f59e0b; /* laranja */
     --muted: rgba(8,51,68,0.06);
-    --primary-grad: linear-gradient(90deg,#6EE7B7 0%, #3B82F6 100%);
-    --success-grad: linear-gradient(135deg, #91ff00 0%, #f4ff54 50%, #bbff00 100%);
+    --primary-grad: linear-gradient(90deg,#60a5fa 0%, #3b82f6 100%);
+    --success-grad: linear-gradient(135deg, #33e407 0%, #eeff00 100%);
     --radius-lg: 18px;
     --radius-md: 12px;
     --shadow-strong: 0 10px 30px rgba(11,22,40,0.10);
@@ -133,11 +138,11 @@ input[type="radio"]:checked + label.choice-btn{
 
 .calculator .actions{ margin-top:0.75rem; display:flex; justify-content:center }
 .btn{
-    /* manter as 3 cores originais do gradiente e animar levemente a posição */
-    background: var(--success-grad);
+    /* botões primários (azulado) */
+    background: var(--primary-grad);
     background-size: 200% 100%;
     background-position: 0% 50%;
-    color: black;
+    color: white;
     border:none;
     padding:1.05rem 1.5rem;
     border-radius:14px;
@@ -150,13 +155,12 @@ input[type="radio"]:checked + label.choice-btn{
 }
 
 .btn:hover{
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 22px 50px rgba(34,88,10,0.16);
-    /* move levemente o gradiente mantendo as mesmas três cores */
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(11,22,40,0.12);
     background-position: 100% 50%;
 }
 
-.btn:active{ transform: translateY(2px) scale(0.995); box-shadow: 0 8px 20px rgba(34,88,10,0.08); filter: brightness(.95) }
+.btn:active{ transform: translateY(1px) scale(0.995); box-shadow: 0 8px 20px rgba(11,22,40,0.06); filter: brightness(.98) }
 .btn:active{ transform:translateY(1px) }
 
 .calc-result{
@@ -195,10 +199,11 @@ input[type="radio"]:checked + label.choice-btn{
 }
 
 .class-good{ background: linear-gradient(180deg, rgba(145,255,0,0.08), rgba(255,255,255,0.02)); }
-.class-good .class-card-head{ background: rgba(145,255,0,0.18); color: #133800 }
+.class-good{ background: linear-gradient(180deg, rgba(163,230,53,0.06), rgba(255,255,255,0.02)); border-left:4px solid rgba(163,230,53,0.85)}
+.class-good .class-card-head{ background: rgba(163,230,53,0.14); color: #04320f }
 
-.class-weak{ background: linear-gradient(180deg, rgba(255,200,0,0.06), rgba(255,255,255,0.02)); }
-.class-weak .class-card-head{ background: rgba(255,200,0,0.14); color: #5a3b00 }
+.class-weak{ background: linear-gradient(180deg, rgba(245,158,11,0.04), rgba(255,255,255,0.02)); border-left:4px solid rgba(245,158,11,0.9) }
+.class-weak .class-card-head{ background: rgba(245,158,11,0.12); color: #5a3b00 }
 
 .totals-row{ display:flex; flex-direction:column; gap:0.45rem; margin-top:0.75rem }
 
@@ -220,6 +225,87 @@ input[type="radio"]:checked + label.choice-btn{
     .class-input-grid{ flex-direction:row }
     .class-input-card{ flex:1 }
 }
+
+/* ------------------ salvar (ação) ------------------ */
+.save-row{ margin-top:1.25rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem }
+.save-btn{ background: rgb(2, 14, 184); color:white; border:none; padding:0.85rem 1.25rem; border-radius:12px; font-weight:800; cursor:pointer }
+.save-btn:hover{ transform: translateY(-3px); box-shadow: 0 12px 30px rgba(16,185,129,0.12) }
+.save-btn.danger{ background: linear-gradient(90deg,#ff7a7a,#ff3b3b); box-shadow: 0 10px 26px rgba(255,59,59,0.12) }
+.save-btn.danger:hover{ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(255,59,59,0.14) }
+.save-note{ max-width:760px; text-align:center; color:var(--accent); font-size:0.95rem; margin:0 }
+
+/* listagem de vendas (manage.html) */
+.sales-grid{ display:grid; gap:0.85rem }
+.sale-card{ border-radius:10px; padding:0.9rem; border:1px solid rgba(11,22,40,0.06); box-shadow:var(--shadow-soft); background:var(--bg-card-2) }
+.sale-card-head{ font-weight:800; margin-bottom:0.5rem }
+.sale-actions{ margin-top:0.5rem; display:flex; gap:0.5rem }
+
+/* ------------------ modal simples (nome do comprador) ------------------ */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,0.45); display:none; align-items:center; justify-content:center; z-index:1200 }
+.modal-backdrop.visible{ display:flex }
+.modal-card{ background:var(--bg-card); padding:1rem 1.25rem; border-radius:12px; box-shadow:var(--shadow-strong); width:min(560px, 94%); border:1px solid rgba(11,22,40,0.06) }
+.modal-card h3{ margin:0 0 0.5rem 0; font-size:1.05rem }
+.modal-row{ display:flex; gap:0.6rem; margin-top:0.8rem }
+.modal-row input[type="text"]{ flex:1; padding:0.8rem 0.9rem; border-radius:10px; border:1px solid rgba(8,51,68,0.08); font-size:1rem }
+.modal-actions{ display:flex; gap:0.5rem; justify-content:flex-end; margin-top:0.85rem }
+.modal-actions .btn, .modal-actions .save-btn{ padding:0.6rem 0.9rem; border-radius:10px }
+.modal-note{ font-size:0.92rem; color:var(--accent); margin-top:0.45rem }
+
+/* botão discreto para 'ver detalhes' na listagem */
+.detail-link{
+    background: transparent;
+    border: none;
+    color: rgba(8,51,68,0.85);
+    text-decoration: underline;
+    padding: 0;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+.detail-link:hover{ color: var(--accent) }
+.sale-detail-line{ margin-top:0.4rem }
+
+/* aprimoramentos visuais dos cards e botões para mobile */
+.sale-card{ display:flex; flex-direction:column; gap:0.45rem; padding:1rem; }
+.sale-card p{ margin:0; color:var(--brand); font-size:0.95rem }
+.sale-card .sale-card-head{ font-size:1rem; color:var(--brand) }
+
+.sale-actions{ justify-content:flex-end; gap:0.5rem; margin-top:0.6rem }
+.sale-actions .save-btn{ padding:0.45rem 0.7rem; font-size:0.95rem; border-radius:10px }
+.sale-actions .save-btn:hover{ transform:none }
+
+/* destaque suave para card ao toque no mobile */
+.sale-card:active{ transform: translateY(1px); box-shadow: 0 6px 18px rgba(11,22,40,0.06) }
+
+/* modal responsivo: ocupa quase toda a largura em telas pequenas */
+.modal-card{ width:min(640px, 92%); max-height:88vh; overflow:auto }
+
+/* detalhes dentro do modal */
+#details-body{ display:block; gap:0.8rem }
+.detail-classes{ display:flex; gap:1rem; flex-wrap:wrap }
+.detail-class{ border-radius:10px; padding:0.8rem; background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98)); border:1px solid rgba(11,22,40,0.04); box-shadow:var(--shadow-soft) }
+.detail-class .detail-head{ font-weight:800; margin-bottom:0.35rem }
+.detail-class.class-good{ border-left:4px solid rgba(163,230,53,0.9); background: linear-gradient(180deg, rgba(163,230,53,0.02), rgba(255,255,255,0.01)); }
+.detail-class.class-weak{ border-left:4px solid rgba(245,158,11,0.9); background: linear-gradient(180deg, rgba(245,158,11,0.02), rgba(255,255,255,0.01)); }
+
+/* animação sutil de modal */
+@keyframes modalPop { from{ transform: translateY(8px) scale(.98); opacity:0 } to{ transform: translateY(0) scale(1); opacity:1 } }
+.modal-card{ animation: modalPop .18s ease both }
+
+@media(max-width:480px){
+    .choice-btn{ min-width:120px; padding:0.6rem 0.9rem }
+    .btn{ padding:0.9rem 1rem; min-width:180px }
+    .sale-card{ padding:0.85rem }
+    .sale-card p{ font-size:0.95rem }
+    .detail-link{ font-size:0.92rem }
+    .modal-card{ width:94%; padding:0.9rem }
+    .modal-row input[type="text"]{ padding:0.7rem }
+    /* botão voltar mais compacto no mobile */
+    #btn-back{ padding:0.75rem 1rem; font-size:0.98rem; min-width:170px }
+}
+
+/* estilo específico do botão de voltar para desktop */
+#btn-back{ background: linear-gradient(90deg,#002df5,#012974); color:rgb(255, 255, 255); border:none; padding:0.7rem 1.1rem; border-radius:12px; box-shadow:0 8px 20px rgba(59,130,246,0.12); cursor:pointer }
+#btn-back:hover{ transform:translateY(-3px) }
 
 /* ------------------ responsividade ------------------ */
 @media(min-width:768px){

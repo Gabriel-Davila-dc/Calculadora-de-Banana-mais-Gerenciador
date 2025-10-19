@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gerenciar Vendas - Fruta Calc</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <header class="site-header">
+
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><img src="./img/banana.png" alt="Voltar"></a>
+      <h1>Gerenciamento de Vendas</h1>
+      <div style="width:100%; display:flex; justify-content:center; margin-top:0.6rem;">
+        <button id="btn-back" class="save-btn">Voltar para calculadora</button>
+      </div>
+    </div>
+    
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Vendas salvas</h2>
+      <div id="sales-list">Carregando...</div>
+    </section>
+
+    <section style="margin-top:1.25rem;">
+      <h2>Ações</h2>
+ 
+    </section>
+  </main>
+
+  <!-- modal de detalhes da venda -->
+  <div id="details-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="details-title">
+      <h3 id="details-title">Detalhes da venda</h3>
+      <div id="details-body">
+        <!-- conteúdo populado por manage.js -->
+      </div>
+      <div class="modal-actions">
+        <button id="details-close" class="btn">Fechar</button>
+      </div>
+    </div>
+  </div>
+  <script src="manage.js"></script>
+</body>
+</html>
