@@ -3,8 +3,14 @@
 function collectCurrentSale(buyerName) {
   // Coleta campos Simples
   const pesoCaixa = document.getElementById('peso-caixa')?.value || null;
-  const precoCaixa = document.getElementById('preco-caixa')?.value || null;
   const qtdCaixas = document.getElementById('quantidade-caixas')?.value || null;
+
+  let precoCaixa = document.getElementById('preco-caixa')?.value || null;
+
+if (precoCaixa !== null && precoCaixa !== '') {
+  const num = parseFloat(precoCaixa.replace(',', '.')); // transforma texto em número
+  precoCaixa = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
 
   // Coleta campos Classificada
   const pb = document.getElementById('peso-boa')?.value || null;
@@ -14,11 +20,11 @@ function collectCurrentSale(buyerName) {
   const prf = document.getElementById('preco-fraca')?.value || null;
   const qf = document.getElementById('qtd-fraca')?.value || null;
 
-  // tipo de negociação e unidade
+  // Tipo de negociação e unidade
   const trade = document.querySelector('input[name="trade_type"]:checked')?.value || 'simples';
   const weight = document.querySelector('input[name="weight_type"]:checked')?.value || 'caixa';
 
-  // Totais exibidos (captura os textos atuais para referência) — elementos diferentes para 'simples' e 'classificada'
+  // Totais exibidos
   let soma = null, pesoTotal = null, media = null;
   if (trade === 'simples') {
     soma = document.getElementById('valor-total')?.textContent || null;
@@ -30,17 +36,32 @@ function collectCurrentSale(buyerName) {
     media = document.getElementById('media-preco')?.textContent || null;
   }
 
+  // Cria objeto base
   const sale = {
     id: 'sale-' + Date.now(),
     createdAt: new Date().toISOString(),
-    trade, weight,
-    simples: { pesoCaixa, precoCaixa, qtdCaixas },
+    trade,
+    weight,
+    simples: {},
     classificada: { boa: { pb, prb, qb }, fraca: { pf, prf, qf } },
-    totals: { soma, pesoTotal, media }
+    totals: {}
   };
-  if(buyerName) sale.buyerName = buyerName;
+
+  // Ajusta conforme unidade de peso
+  if (weight === 'caixa') {
+    sale.simples = { pesoCaixa, precoCaixa, qtdCaixas };
+    sale.totals = { soma, pesoTotal, media };
+  } else {
+    sale.simples = { pesoCaixa, media, qtdCaixas };
+
+    sale.totals = { soma, pesoTotal, precoCaixa };
+  }
+
+  if (buyerName) sale.buyerName = buyerName;
+
   return sale;
 }
+
 
 function saveSaleLocally(buyerName) {
   const sale = collectCurrentSale(buyerName);

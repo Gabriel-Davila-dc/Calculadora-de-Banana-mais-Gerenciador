@@ -25,7 +25,7 @@
         <p><strong>Tipo:</strong> ${sale.trade} / ${sale.weight}</p>
         <p><strong>Soma:</strong> ${sale.totals.soma || '—'}</p>
         <p><strong>Peso total:</strong> ${sale.totals.pesoTotal || '—'}</p>
-        <p><strong>Média:</strong> ${sale.totals.media || '—'}</p>
+        <p><strong>Média:</strong> ${sale.totals.media || sale.totals.precoCaixa || '—'}</p>
         <div class="sale-detail-line"><button class="detail-link" data-view-id="${sale.id}">Ver detalhes</button></div>
         <div class="sale-actions">
           <button class="save-btn" data-id="${sale.id}">Exportar JSON</button>
@@ -102,8 +102,11 @@
     if(sale.trade === 'simples'){
       html += `<h4>Simples</h4>`;
       html += `<p><strong>Peso da caixa:</strong> ${sale.simples.pesoCaixa || '—'}</p>`;
-      html += `<p><strong>Preço da caixa:</strong> ${sale.simples.precoCaixa || '—'}</p>`;
-      html += `<p><strong>Quantidade de caixas:</strong> ${sale.simples.qtdCaixas || '—'}</p>`;
+      html += `<p><strong>Preço da caixa:</strong> ${sale.simples.precoCaixa   || sale.simples.media ||'—'}</p>`;
+      console.log(`PrecoCaixa: ${sale.simples.precoCaixa}`);
+      console.log(`Media: ${sale.simples.media}`);
+      
+      html += `<p><strong>Quantidade de caixas:</strong> ${sale.simples.qtdCaixas ||  '—'}</p>`;
     } else {
       html += `<h4>Classificada</h4>`;
       html += `<div class="detail-classes">`;
@@ -127,7 +130,7 @@
     html += `<h4>Totais</h4>`;
     html += `<p><strong>Soma:</strong> ${sale.totals.soma || '—'}</p>`;
     html += `<p><strong>Peso total:</strong> ${sale.totals.pesoTotal || '—'}</p>`;
-    html += `<p><strong>Média:</strong> ${sale.totals.media || '—'}</p>`;
+    html += `<p><strong>Média:</strong> ${sale.totals.media || sale.totals.precoCaixa || '—'}</p>`;
 
     if(detailsBody) detailsBody.innerHTML = html;
     if(detailsBackdrop){
