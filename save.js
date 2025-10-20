@@ -4,21 +4,17 @@ function collectCurrentSale(buyerName) {
   // Coleta campos Simples
   const pesoCaixa = document.getElementById('peso-caixa')?.value || null;
   const qtdCaixas = document.getElementById('quantidade-caixas')?.value || null;
+  var precoCaixa = document.getElementById('preco-caixa')?.value || null;
 
-  let precoCaixa = document.getElementById('preco-caixa')?.value || null;
 
-if (precoCaixa !== null && precoCaixa !== '') {
-  const num = parseFloat(precoCaixa.replace(',', '.')); // transforma texto em número
-  precoCaixa = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
 
   // Coleta campos Classificada
-  const pb = document.getElementById('peso-boa')?.value || null;
-  const prb = document.getElementById('preco-boa')?.value || null;
-  const qb = document.getElementById('qtd-boa')?.value || null;
-  const pf = document.getElementById('peso-fraca')?.value || null;
-  const prf = document.getElementById('preco-fraca')?.value || null;
-  const qf = document.getElementById('qtd-fraca')?.value || null;
+  var pb = document.getElementById('peso-boa')?.value || null;
+  var prb = document.getElementById('preco-boa')?.value || null;
+  var qb = document.getElementById('qtd-boa')?.value || null;
+  var pf = document.getElementById('peso-fraca')?.value || null;
+  var prf = document.getElementById('preco-fraca')?.value || null;
+  var qf = document.getElementById('qtd-fraca')?.value || null;
 
   // Tipo de negociação e unidade
   const trade = document.querySelector('input[name="trade_type"]:checked')?.value || 'simples';
@@ -43,18 +39,29 @@ if (precoCaixa !== null && precoCaixa !== '') {
     trade,
     weight,
     simples: {},
-    classificada: { boa: { pb, prb, qb }, fraca: { pf, prf, qf } },
+    classificada: {},
     totals: {}
   };
 
   // Ajusta conforme unidade de peso
   if (weight === 'caixa') {
     sale.simples = { pesoCaixa, precoCaixa, qtdCaixas };
+    sale.classificada = { boa: { pb, prb, qb }, fraca: { pf, prf, qf } }
     sale.totals = { soma, pesoTotal, media };
   } else {
     sale.simples = { pesoCaixa, media, qtdCaixas };
+     prb = prb * pb;
+     prf = prf * pf;
+    soma = transformaEmNumero(soma);
+    pesoTotal = kgParaNumero(pesoTotal);
+    media = (soma / pesoTotal).toFixed(2);
+    media = formataBrasileiro(media);
+    soma = formataBrasileiro(soma);
+    pesoTotal = pesoTotal + ' kg';
 
-    sale.totals = { soma, pesoTotal, precoCaixa };
+    console.log(`${media} media  = ${soma} / ${pesoTotal}`);
+    sale.classificada = { boa: { pb, prb, qb }, fraca: { pf, prf, qf } }
+    sale.totals = { soma, pesoTotal, media };
   }
 
   if (buyerName) sale.buyerName = buyerName;
@@ -74,3 +81,42 @@ function saveSaleLocally(buyerName) {
 
 // exportar função para console/uso global
 window.saveSaleLocally = saveSaleLocally;
+
+
+function transformaEmNumero(valor) {
+   if (!valor) return 0;
+
+  return parseFloat(
+    valor
+      .toString()
+      .replace(/\s/g, '')      // remove espaços
+      .replace('R$', '')       // remove símbolo de moeda
+      .replace(/\./g, '')      // remove pontos de milhar
+      .replace(',', '.')       // troca vírgula decimal por ponto
+  ) || 0;
+}
+
+function kgParaNumero(valor) {
+  if (!valor) return 0;
+
+  return parseFloat(
+    valor
+      .toString()
+      .replace(/\s/g, '')      // remove espaços
+      .replace(/kg/i, '')      // remove "kg" (maiúsculo ou minúsculo)o
+  ) || 0;
+}
+
+function formataBrasileiro(valor, comSimbolo = false) {
+  // Garante que é número
+  const numero = parseFloat(valor);
+  if (isNaN(numero)) return 'R$ 0,00';
+
+  // Opção com ou sem símbolo de moeda
+  return "R$ " + numero.toLocaleString('pt-BR', {
+    style: comSimbolo ? 'currency' : 'decimal',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
